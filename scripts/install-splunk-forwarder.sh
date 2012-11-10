@@ -10,8 +10,13 @@ SPLUNK_HOME="/opt/splunkforwarder"
 SPLUNK_INDEXERS="ec2-75-101-131-33.compute-1.amazonaws.com:9997,ec2-23-21-126-55.compute-1.amazonaws.com:9997"
 SPLUNK_DEPLOY_SERVER="ec2-23-21-126-56.compute-1.amazonaws.com:8089"
 SPLUNK_ADMIN_USER="admin"
+APPLICATION_NAME=`$APPLICATION_NAME`
 SPLUNK_ADMIN_PASSWORD="pkT&(,5("
 SPLUNK_LICENSE="sscheel@pbs.org;OE8sO6O7QaA7EhGfXr1kfemOcXJEgofk3pEytcv++EsqUfO43IYFPK6qwX5QI0GVsPNOw6mu3BjcBtzsn10supQOojSGZrQXxCStRDbRlutwEzDl/TUK00PuHcx446G7vjYmyNWv3oeHR3VijeE5AI7tomWqCp9NvtH7p+rF+ePupcAtBBBxYvMeZEsHJdVSNyK+EXL5nUkIwJctzHsfGYYW8wgCdROYJdroQ+F2bqCVrTpAPqqrN3zLPA2jxgugWwhAILb+jayu1p2s2tAHjfwIHO4AROEBSe52GxXzeJavFYFXUScc2w7wTNx5qSb4KZ+IDqOdfuRUiUUNuLC/9A=="
+
+# dump environmental variables
+echo "Dump environmental variables"
+echo env
 
 # Skip if no Splunk receiver is specified
 if [ -z "$SPLUNK_INDEXERS" ]; then
@@ -69,7 +74,6 @@ USERNAME = $SPLUNK_ADMIN_USER
 PASSWORD = $SPLUNK_ADMIN_PASSWORD
 EOF
 
-
 echo "Installing license..."
 echo "$SPLUNK_LICENSE" > $SPLUNK_HOME/etc/splunk.license
 
@@ -90,7 +94,7 @@ echo "Configuring props.conf"
 
 cat<<EOF > $conf_dir/props.conf
 [source::/var/log/httpd/access_log]
-sourcetype = django-cloudsearch
+sourcetype = $APPLICATION_NAME
 EOF
 
 echo "Starting Splunk"
