@@ -63,16 +63,15 @@ mv splunkforwarder /opt/
 # Set admin user creds
 echo "Setting one time admin credentials..."
 
-cat<<EOF > user-seed.conf
+cat<<EOF > $conf_dir/user-seed.conf
 [user_info]
 USERNAME = $SPLUNK_ADMIN_USER
 PASSWORD = $SPLUNK_ADMIN_PASSWORD
 EOF
-mv user-seed.conf $conf_dir
+
 
 echo "Installing license..."
-echo "$SPLUNK_LICENSE" > splunk.license
-mv splunk.license $SPLUNK_HOME/etc/
+echo "$SPLUNK_LICENSE" > $SPLUNK_HOME/etc/splunk.license
 
 echo "Configuring outputs.conf"
 
@@ -85,7 +84,13 @@ sslRootCAPath=$cert_path/cacert.pem
 sslVerifyServerCert=true
 sslCommonNameToCheck=SplunkServerDefaultCert
 altCommonNameToCheck=SplunkAltName
+EOF
 
+echo "Configuring props.conf"
+
+cat<<EOF > $conf_dir/props.conf
+[source::/var/log/httpd/access_log]
+sourcetype = django-cloudsearch
 EOF
 
 echo "Starting Splunk"
