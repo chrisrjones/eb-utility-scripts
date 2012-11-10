@@ -5,7 +5,7 @@ sudo -s
 
 cd /home/ec2-user
 
-SERVER_NAME="EB_BRENDSEL"
+SERVER_NAME=`uname -n`
 SPLUNK_HOME="/opt/splunkforwarder"
 SPLUNK_INDEXERS="ec2-75-101-131-33.compute-1.amazonaws.com:9997,ec2-23-21-126-55.compute-1.amazonaws.com:9997"
 SPLUNK_DEPLOY_SERVER="ec2-23-21-126-56.compute-1.amazonaws.com:8089"
